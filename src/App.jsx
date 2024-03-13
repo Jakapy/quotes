@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Quote from "./Quotes.jsx";
 import { Badge } from "@/components/ui/badge";
+import { Select } from "@radix-ui/react-select";
 
 export default function App() {
   const [quotes, setQuotes] = useState([]);
@@ -13,6 +14,17 @@ export default function App() {
 
     setQuotes(data);
   }
+
+  function isQuoteSelected(quote) {
+    if (!selectedTag) {
+      return true;
+    }
+    return quote.tags.includes(selectedTag);
+  }
+
+  useEffect(() => {
+    console.log(selectedTag);
+  }, [selectedTag]);
 
   useEffect(() => {
     getData();
@@ -57,14 +69,18 @@ export default function App() {
       <div className="p-4">
         <div>
           {tags.map((tag) => (
-            <Badge key={tag}>{tag}</Badge>
+            <Badge key={tag} onClick={() => setSelectedTag(tag)}>
+              {tag}
+            </Badge>
           ))}
         </div>
       </div>
       <div className="grid grid-cols-3 grid-rows-3 gap-3 ">
-        {quotes.map((quote) => (
-          <Quote quote={quote} key={quote["_id"]}></Quote>
-        ))}
+        {quotes
+          .filter((quote) => isQuoteSelected(quote))
+          .map((quote) => (
+            <Quote quote={quote} key={quote["_id"]}></Quote>
+          ))}
       </div>
     </>
   );
