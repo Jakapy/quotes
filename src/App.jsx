@@ -69,7 +69,20 @@ export default function App() {
       <div className="p-4">
         <div>
           {tags.map((tag) => (
-            <Badge key={tag} onClick={() => setSelectedTag(tag)}>
+            <Badge
+              className=" cursor-pointer"
+              key={tag}
+              onClick={() => {
+                if (tag === selectedTag) {
+                  setSelectedTag(null);
+                } else {
+                  //select
+
+                  setSelectedTag(tag);
+                }
+              }}
+              variant={selectedTag === tag ? "outline" : "default"}
+            >
               {tag}
             </Badge>
           ))}
